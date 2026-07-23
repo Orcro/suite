@@ -2,21 +2,47 @@
 # Licensed under Apache-2.0
 # Maintained by Alex <alexander.murphy@orcro.co.uk>
 
-FROM debian:trixie-slim
+###
+### Install the base image
+###
+
+# localhost/debbase
+FROM debian:trixie-20260713-slim
+RUN apt update
 MAINTAINER Alex alexander.murphy@orcro.co.uk
 USER root
 
-# Update trixie base image
-RUN apt update
+### 
+### Install libraries (Debian repos)
+### 
 
-# Install dependencies
-RUN apt install make
+# localhost/gcc
+RUN apt install -y --no-install-recommends gcc
 
-# Install tools for compliance (note that many are already installed, mawk, find, etc.)
+# localhost/g++
+RUN apt install -y --no-install-recommends g++
+
+# localhost/libcurl4-openssl-dev
+RUN apt install -y --no-install-recommends libcurl4-openssl-dev 
+
+# localhost/make
+RUN apt install -y --no-install-recommends make 
+
+# localhost/libuv1-dev
+RUN apt install -y --no-install-recommends libuv1-dev 
+
+###
+### Install non-default tools (Debian repos)
+###
+
+# localhost/rg
+RUN apt install -y --no-install-recommends ripgrep
+
+# localhost/r
 RUN apt install -y --no-install-recommends r-base 
-# RUN apt install -y --no-install-recommends ripgrep
 
-# And additional R libraries
-# RUN R -e 'install.packages("dplyr", dependencies = TRUE)'
+# localhost/dplyr
+RUN R -e 'install.packages("dplyr", dependencies = TRUE)'
 
-CMD echo "hello world"
+# Sanity check
+CMD echo hello world
